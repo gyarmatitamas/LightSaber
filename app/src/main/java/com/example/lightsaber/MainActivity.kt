@@ -1,5 +1,6 @@
 package com.example.lightsaber
 
+import android.content.DialogInterface
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -12,9 +13,12 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import java.lang.Math.abs
 import java.lang.Thread.sleep
+import kotlin.collections.indexOf as indexOf
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
 
@@ -27,6 +31,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     lateinit var sensorManager: SensorManager
     lateinit var leftSwingPlayer: MediaPlayer
     lateinit var rightSwingPlayer: MediaPlayer
+    lateinit var endSound: MediaPlayer
 
     lateinit var stb: Animation
     lateinit var light_on: Animation
@@ -34,7 +39,10 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     lateinit var color_on: Animation
     lateinit var color_off: Animation
 
-    lateinit var endSound: MediaPlayer
+
+
+    var colors = arrayOf("blue","green","purple","yellow","red")
+    var choosen_color = "blue"
     var visible = 0
 
 
@@ -77,8 +85,28 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     }
 
     fun hiltPushed(view: View) {
+        print(choosen_color)
         img = findViewById(R.id.lightBlade)
-
+        if(choosen_color == "blue")
+        {
+            img.setImageResource(R.drawable.blue)
+        }
+        else if(choosen_color == "green")
+        {
+            img.setImageResource(R.drawable.green)
+        }
+        else if(choosen_color == "yellow")
+        {
+            img.setImageResource(R.drawable.yellow)
+        }
+        else if(choosen_color == "red")
+        {
+            img.setImageResource(R.drawable.red)
+        }
+        else if(choosen_color == "purple")
+        {
+            img.setImageResource(R.drawable.purple)
+        }
 
         if (visible == 0)
         {
@@ -124,7 +152,16 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     }
 
     fun onColorClicked(view: View) {
-
+        var i = colors.indexOf(choosen_color)
+        var alertDialog = AlertDialog.Builder(this@MainActivity)
+        alertDialog.setTitle("Choose color of the light")
+        alertDialog.setSingleChoiceItems(colors,i){dialogInterface: DialogInterface, position : Int ->
+            choosen_color=colors[position]
+        }
+        alertDialog.setCancelable(true)
+        alertDialog.show()
+        print("\n\n\nbaszkikam:"+choosen_color+"\n\n\n")
     }
+
 
 }

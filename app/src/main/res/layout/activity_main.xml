@@ -15,19 +15,20 @@
         <ImageView
             android:id="@+id/lightBlade"
             android:layout_width="match_parent"
-            android:layout_height="550dp"
+            android:layout_height="500dp"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="-30dp"
+            android:layout_marginTop="20dp"
             android:soundEffectsEnabled="true"
             android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/blue_tp" />
+            app:srcCompat="@drawable/blue" />
 
         <ImageView
             android:id="@+id/hilt"
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
             android:layout_height="200dp"
+            android:layout_marginLeft="155dp"
             android:layout_marginTop="500dp"
             android:onClick="hiltPushed"
             app:layout_constraintStart_toStartOf="parent"
