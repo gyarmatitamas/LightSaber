@@ -35,6 +35,16 @@
             app:srcCompat="@drawable/hilt1"
             tools:ignore="MissingConstraints,SpeakableTextPresentCheck" />
 
+        <ImageView
+            android:id="@+id/color"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="false"
+            android:layout_marginTop="500dp"
+            android:onClick="onColorClicked"
+            android:paddingRight="300dp"
+            app:srcCompat="@drawable/color" />
+
     </RelativeLayout>
 
 
