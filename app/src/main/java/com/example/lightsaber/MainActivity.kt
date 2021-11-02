@@ -22,29 +22,32 @@ import kotlin.collections.indexOf as indexOf
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
 
-    lateinit var img: ImageView
+    // images
+    lateinit var light: ImageView
     lateinit var hilt: ImageView
-    lateinit var color: ImageView
+    lateinit var colorSetting: ImageView
 
+    // mediaPlayers
     lateinit var onSound: MediaPlayer
     lateinit var startSound: MediaPlayer
-    lateinit var sensorManager: SensorManager
     lateinit var leftSwingPlayer: MediaPlayer
     lateinit var rightSwingPlayer: MediaPlayer
     lateinit var endSound: MediaPlayer
 
+    // animations
     lateinit var stb: Animation
     lateinit var light_on: Animation
     lateinit var light_off: Animation
     lateinit var color_on: Animation
     lateinit var color_off: Animation
 
+    // sensorManager
+    lateinit var sensorManager: SensorManager
 
-
+    // variables
     var colors = arrayOf("blue","green","purple","yellow","red")
     var choosen_color = "blue"
     var visible = 0
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -52,13 +55,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         setContentView(R.layout.activity_main)
 
         hilt = findViewById(R.id.hilt)
-        color = findViewById(R.id.color)
-
-        stb = AnimationUtils.loadAnimation(this,R.anim.stb)
-        light_on = AnimationUtils.loadAnimation(this,R.anim.light_on)
-        light_off = AnimationUtils.loadAnimation(this,R.anim.light_off)
-        color_on = AnimationUtils.loadAnimation(this,R.anim.color_on)
-        color_off = AnimationUtils.loadAnimation(this,R.anim.color_off)
+        colorSetting = findViewById(R.id.colorSetting)
+        light = findViewById(R.id.lightBlade)
 
         onSound = MediaPlayer.create(this,R.raw.on_sound)
         startSound = MediaPlayer.create(this,R.raw.start_sound)
@@ -66,8 +64,14 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         rightSwingPlayer = MediaPlayer.create(this, R.raw.right_swing)
         endSound = MediaPlayer.create(this,R.raw.end_sound)
 
+        stb = AnimationUtils.loadAnimation(this,R.anim.stb)
+        light_on = AnimationUtils.loadAnimation(this,R.anim.light_on)
+        light_off = AnimationUtils.loadAnimation(this,R.anim.light_off)
+        color_on = AnimationUtils.loadAnimation(this,R.anim.color_on)
+        color_off = AnimationUtils.loadAnimation(this,R.anim.color_off)
+
         hilt.startAnimation(stb)
-        color.startAnimation(stb)
+        colorSetting.startAnimation(stb)
 
         setUpSensors()
     }
@@ -85,49 +89,57 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     }
 
     fun hiltPushed(view: View) {
-        print(choosen_color)
-        img = findViewById(R.id.lightBlade)
-        if(choosen_color == "blue")
-        {
-            img.setImageResource(R.drawable.blue)
-        }
-        else if(choosen_color == "green")
-        {
-            img.setImageResource(R.drawable.green)
-        }
-        else if(choosen_color == "yellow")
-        {
-            img.setImageResource(R.drawable.yellow)
-        }
-        else if(choosen_color == "red")
-        {
-            img.setImageResource(R.drawable.red)
-        }
-        else if(choosen_color == "purple")
-        {
-            img.setImageResource(R.drawable.purple)
-        }
-
         if (visible == 0)
         {
-            img.startAnimation(light_on)
-            color.startAnimation(color_off)
+            getLightColor()
+
+            light.startAnimation(light_on)
+            colorSetting.startAnimation(color_off)
+
             startSound.start()
             onSound.start()
             onSound.isLooping = true
+
             visible = 1
-            img.visibility = View.VISIBLE
-            color.visibility = View.INVISIBLE
+
+            light.visibility = View.VISIBLE
+            colorSetting.visibility = View.INVISIBLE
         }
         else
         {
-            img.startAnimation(light_off)
-            color.startAnimation(color_on)
+            light.startAnimation(light_off)
+            colorSetting.startAnimation(color_on)
+
             endSound.start()
             onSound.pause()
+
             visible = 0
-            img.visibility = View.INVISIBLE
-            color.visibility = View.VISIBLE
+
+            light.visibility = View.INVISIBLE
+            colorSetting.visibility = View.VISIBLE
+        }
+    }
+
+    private fun getLightColor() {
+        if(choosen_color == "blue")
+        {
+            light.setImageResource(R.drawable.blue)
+        }
+        else if(choosen_color == "green")
+        {
+            light.setImageResource(R.drawable.green)
+        }
+        else if(choosen_color == "yellow")
+        {
+            light.setImageResource(R.drawable.yellow)
+        }
+        else if(choosen_color == "red")
+        {
+            light.setImageResource(R.drawable.red)
+        }
+        else if(choosen_color == "purple")
+        {
+            light.setImageResource(R.drawable.purple)
         }
     }
 
@@ -143,16 +155,16 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             {
                 rightSwingPlayer.start()
             }
-
         }
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-
+        //empty
     }
 
-    fun onColorClicked(view: View) {
+    fun onColorSettingClicked(view: View) {
         var i = colors.indexOf(choosen_color)
+
         var alertDialog = AlertDialog.Builder(this@MainActivity)
         alertDialog.setTitle("Choose color of the light")
         alertDialog.setSingleChoiceItems(colors,i){dialogInterface: DialogInterface, position : Int ->
@@ -160,8 +172,13 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
         alertDialog.setCancelable(true)
         alertDialog.show()
-        print("\n\n\nbaszkikam:"+choosen_color+"\n\n\n")
     }
 
-
+    override fun onPause() {
+        if(visible == 1)
+        {
+            hiltPushed(hilt)
+        }
+        super.onPause()
+    }
 }

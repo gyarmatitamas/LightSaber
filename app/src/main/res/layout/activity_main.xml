@@ -37,12 +37,12 @@
             tools:ignore="MissingConstraints,SpeakableTextPresentCheck" />
 
         <ImageView
-            android:id="@+id/color"
+            android:id="@+id/colorSetting"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentLeft="false"
             android:layout_marginTop="500dp"
-            android:onClick="onColorClicked"
+            android:onClick="onColorSettingClicked"
             android:paddingRight="300dp"
             app:srcCompat="@drawable/color" />
 
